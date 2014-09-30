@@ -26,7 +26,7 @@ twitter_example() ->
   Keys = get_account_keys(account1),
 
   % Run our pipeline
-  P = twitterminer_pipeline:build(twitter_print_pipeline(URL, Keys)),
+  P = twitterminer_pipeline:build_link(twitter_print_pipeline(URL, Keys)),
 
   % If the pipeline does not terminate after 60 s, this process will
   % force it.

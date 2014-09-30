@@ -1,10 +1,11 @@
 -module(twitterminer_pipeline).
 
--export([build/1, terminate/1, join/1, consumer/2, map/1, raw_transformer/1, producer/2]).
+-export([build_link/1, terminate/1, join/1, consumer/2, map/1, raw_transformer/1, producer/2]).
 
 % @doc Build a pipeline and run it, returning a handle to it. A pipeline is a list of stages
-% built 'backwards' - producer is the last element, and consumer is the first one.
-build(Stages) ->
+% built 'backwards' - producer is the last element, and consumer is the first one. The pipeline
+% is linked to the calling process.
+build_link(Stages) ->
   Ref = make_ref(),
   S = self(),
   P = spawn_link(fun () -> build_aux(S, Ref, Stages) end),
