@@ -1,6 +1,6 @@
 # DIT029 Twitter Miner
 
-This is a demonstrator Twitter streaming API client for the DIT029 course at [Gothenburg University](http://www.gu.se).
+This is a demonstrator Twitter streaming API client for the DIT029 course at the [Gothenburg University](http://www.gu.se).
 
 **License:** This software is released into the public domain (see `LICENSE`).
 
@@ -70,6 +70,27 @@ This is a demonstrator Twitter streaming API client for the DIT029 course at [Go
 
     If everything goes OK, you should see a stream of tweets running for 60 s. If you get a message indicating HTTP response code 401, it probably means authentication error.
 
+## Saving tweets to Riak
+
+If you are able to run the basic example above, you can try an example that saves the tweets to Riak, as follows:
+
+1. Edit the `twitterminer.config` file to include the host/port of the Riak node that you want to connect to.
+
+1. Run the Erlang interpreter with the dependencies, and start the needed applications:
+
+       $ erl -pa deps/*/ebin -pa ebin -config twitterminer
+
+    ```erlang
+    1> application:ensure_all_started(twitterminer).
+    ```
+1. Run the example
+
+    ```erlang
+    2> twitterminer_riak:riak_example().
+    ```
+
+    If you get no errors, your tweets should be saved in the `<"tweets">` bucket in your Riak database.
+
 ## Dependencies
 
 ### [erlang-oauth](https://github.com/tim/erlang-oauth/)
@@ -83,6 +104,10 @@ ibrowse is an HTTP client allowing to close a connection while the request is st
 ### [jiffy](https://github.com/davisp/jiffy)
 
 jiffy is a JSON parser, which uses efficient C code to perform the actual parsing. [mochijson2](https://github.com/bjnortier/mochijson2) is another alternative that could be used here.
+
+### [riakc](https://github.com/basho/riak-erlang-client)
+
+riak-erlang-client is the library that we use to connect to Riak over the protocol buffers interface.
 
 ## Author
 

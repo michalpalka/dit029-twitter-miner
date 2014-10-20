@@ -1,6 +1,6 @@
 -module(twitterminer_source).
 
--export([twitter_example/0, twitter_print_pipeline/2, twitter_producer/2, get_account_keys/1]).
+-export([twitter_example/0, split_transformer/0, decorate_with_id/1, twitter_print_pipeline/2, twitter_producer/2, get_account_keys/1]).
 
 -record(account_keys, {api_key, api_secret,
                        access_token, access_token_secret}).
@@ -54,8 +54,7 @@ twitter_print_pipeline(URL, Keys) ->
       fun(Msg, N) -> my_print(Msg), N+1 end, 0),
     twitterminer_pipeline:map(
       fun decorate_with_id/1),
-    twitterminer_pipeline:raw_transformer(
-      fun(Sink, Sender) -> split_loop(Sink, Sender, <<>>) end),
+    split_transformer(),
     Prod].
 
 %% @doc Create a pipeline producer that opens a connection
@@ -179,6 +178,10 @@ my_print(T) ->
 
 print_headers(C) ->
   lists:append(lists:map(fun ({X, Y}) -> lists:append([X, ":", Y, ", "]) end, C)).
+
+split_transformer() ->
+  twitterminer_pipeline:raw_transformer(
+        fun(Sink, Sender) -> split_loop(Sink, Sender, <<>>) end).
 
 % Get HTTP chunks and reassemble them into chunks that we get
 % as a result of specifying delimited=length.
