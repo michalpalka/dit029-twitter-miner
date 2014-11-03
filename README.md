@@ -78,7 +78,7 @@ If you are able to run the basic example above, you can try an example that save
 
 1. Run the Erlang interpreter with the dependencies, and start the needed applications:
 
-       $ erl -pa deps/*/ebin -pa ebin -config twitterminer
+        $ erl -pa deps/*/ebin -pa ebin -config twitterminer
 
     ```erlang
     1> application:ensure_all_started(twitterminer).
@@ -86,7 +86,7 @@ If you are able to run the basic example above, you can try an example that save
 1. Run the example
 
     ```erlang
-    2> twitterminer_riak:riak_example().
+    2> twitterminer_riak:twitter_example().
     ```
 
     If you get no errors, your tweets should be saved in the `<"tweets">` bucket in your Riak database.
